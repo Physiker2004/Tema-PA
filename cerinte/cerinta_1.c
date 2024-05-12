@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 struct p {
     char nume[20];
     char prenume[20];
@@ -46,22 +45,41 @@ void printList(FILE* f, Node *head) {
     }
 }
 
-int main(int argc, char *argv[]){
-    FILE* f_in= fopen(argv[1], "rt");
-    FILE* f_out= fopen(argv[2], "wt");
+//void elim(FILE* f);
+
+void cerinta12(FILE* f, FILE* g) {
     int nr_echipe;
     int i;
     Node* head = NULL;  
+    fscanf(f, "%d", &nr_echipe);
+    for (i=0;i<nr_echipe;i++) createNode(f, &head);
+    printList(g, head);
+}
 
-    fscanf(f_in, "%d", &nr_echipe);
+int main(int argc, char *argv[]){
+    FILE* f1_in= fopen(argv[1], "rt");
+    FILE* f1_out= fopen(argv[2], "wt");
+    
+    cerinta12(f1_in, f1_out);
 
-    for (i=0;i<nr_echipe;i++){
-        createNode(f_in, &head);
-    }
+    fclose(f1_in);
+    fclose(f1_out);
 
-    printList(f_out, head);
+    f1_in= fopen(argv[3], "rt");
+    f1_out= fopen(argv[4], "wt");
 
-    fclose(f_in);
-    fclose(f_out);
+    cerinta12(f1_in, f1_out);
+
+    fclose(f1_in);
+    fclose(f1_out);
+
+    f1_in= fopen(argv[5], "rt");
+    f1_out= fopen(argv[6], "wt");
+
+    cerinta12(f1_in, f1_out);
+
+    fclose(f1_in);
+    fclose(f1_out);
+
     return 0;
 }
