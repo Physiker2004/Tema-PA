@@ -1,4 +1,4 @@
-#include <stdio.h>
+//#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "player.h"
@@ -18,7 +18,6 @@ void createNode (FILE *f, Node **head) {
     fgets(buf, 50, f);
     strcpy(buf+strlen(buf)-1, buf+strlen(buf));
     strcpy(echipa->nume_echipa, buf);
-    //fscanf(f, "%s\n", echipa->nume_echipa);
     fflush(stdin);
 
 
@@ -41,9 +40,6 @@ void printList(FILE* f, Node *head) {
     else {
         fputs(head->nume_echipa, f);
         fprintf(f, "\n");
-        /*puts(head->nume_echipa);
-        printf("%f\n", head->punctaj);
-        printf("-------\n");*/
         printList(f, head->next);
     }
 }
@@ -58,99 +54,75 @@ void cerinta12(FILE* f, FILE* g, Node **head, int *nr_echipe) {
 }
 
 int main(int argc, char *argv[]){
-    FILE* f1_in= fopen(argv[1], "rt");
-    FILE* f1_out= fopen(argv[2], "wt");
+    int i, j, test=0, n;
     Node *head;
+    BST *root;
+    FILE* fc= fopen(argv[1], "rt");
+    FILE* f1_in= fopen(argv[2], "rt");
+    FILE* f1_out= fopen(argv[3], "wt");
 
-    int n;
+    for (i=0;i<5;i++) {
+        fscanf(fc, "%d", &j);
+        test += j;
+    }
     
-    cerinta12(f1_in, f1_out, &head, &n);
-    printList(f1_out, head);
 
-    fclose(f1_in);
-    fclose(f1_out);
+    if(test == 1) {
+        head=NULL;
+        n=0;
 
-    f1_in= fopen(argv[3], "rt");
-    f1_out= fopen(argv[4], "wt");
+        cerinta12(f1_in, f1_out, &head, &n);
+        printList(f1_out, head);
 
-    cerinta12(f1_in, f1_out, &head, &n);
-    printList(f1_out, head);
+        fclose(fc);
+        fclose(f1_in);
+        fclose(f1_out);
+    }
 
-    fclose(f1_in);
-    fclose(f1_out);
+    if(test == 2) {
+        head=NULL;
+        n=0;
 
-    f1_in= fopen(argv[5], "rt");
-    f1_out= fopen(argv[6], "wt");
+        cerinta12(f1_in, f1_out, &head, &n);
+        elim(&head, n);
+        printList(f1_out, head);
 
-    cerinta12(f1_in, f1_out, &head, &n);
-    printList(f1_out, head);
+        fclose(fc);
+        fclose(f1_in);
+        fclose(f1_out);
+    }
 
-    fclose(f1_in);
-    fclose(f1_out);
+    if(test == 3) {
+        head=NULL;
+        n=0;
 
-    f1_in= fopen(argv[7], "rt");
-    f1_out= fopen(argv[8], "wt");
+        cerinta12(f1_in, f1_out, &head, &n);
+        elim(&head, n);
+        printList(f1_out, head);
+        matchMaking(&head, &root, f1_out);
 
-    cerinta12(f1_in, f1_out, &head, &n);
-    //printPoints(head);
-    elim(&head, n);
-    printList(f1_out, head);
+        fclose(fc);
+        fclose(f1_in);
+        fclose(f1_out);
+    }
 
-    fclose(f1_in);
-    fclose(f1_out);
+    if(test == 4) {
+        head=NULL;
+        root=NULL;
+        n=0;
 
-    f1_in= fopen(argv[9], "rt");
-    f1_out= fopen(argv[10], "wt");
+        cerinta12(f1_in, f1_out, &head, &n);
+        elim(&head, n);
+        printList(f1_out, head);
 
-    cerinta12(f1_in, f1_out, &head, &n);
-    elim(&head, n);
-    printList(f1_out, head);
+        matchMaking(&head, &root, f1_out);
 
-    fclose(f1_in);
-    fclose(f1_out);
+        clasament(root, f1_out);
 
-    f1_in= fopen(argv[11], "rt");
-    f1_out= fopen(argv[12], "wt");
-
-    cerinta12(f1_in, f1_out, &head, &n);
-    elim(&head, n);
-    printList(f1_out, head);
-
-    fclose(f1_in);
-    fclose(f1_out);
-
-    f1_in= fopen(argv[13], "rt");
-    f1_out= fopen(argv[14], "wt");
-
-    cerinta12(f1_in, f1_out, &head, &n);
-    elim(&head, n);
-    printList(f1_out, head);
-    matchMaking(&head, f1_out);
-
-    fclose(f1_in);
-    fclose(f1_out);
-
-    f1_in= fopen(argv[15], "rt");
-    f1_out= fopen(argv[16], "wt");
-
-    cerinta12(f1_in, f1_out, &head, &n);
-    elim(&head, n);
-    printList(f1_out, head);
-    matchMaking(&head, f1_out);
-
-    fclose(f1_in);
-    fclose(f1_out);
-
-    f1_in= fopen(argv[17], "rt");
-    f1_out= fopen(argv[18], "wt");
-
-    cerinta12(f1_in, f1_out, &head, &n);
-    elim(&head, n);
-    printList(f1_out, head);
-    matchMaking(&head, f1_out);
-
-    fclose(f1_in);
-    fclose(f1_out);
+        fclose(fc);
+        fclose(f1_in);
+        fclose(f1_out);
+    }
 
     return 0;
 }

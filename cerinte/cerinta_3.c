@@ -11,33 +11,6 @@ Queue* createQueue(){
 	return q;	
 }
 
-int alpha(char s1[], char s2[]){
-	char a=s1[0], b=s2[0];
-	//char *c1, *c2;
-
-	int i=0;
-	if (a<90 && a>64) a+=32;
-	if (b<90 && b>64) b+=32;
-
-	/*strcpy(c1,s1);
-	c1=strtok(s1, " ");
-	strcpy(c2,s2);
-	c2=strcpy(s2, " ");
-
-	while (c1){
-		while(c2){
-			if(c1[0]<c2[0]) return 0;
-			c2=strtok(NULL, " ");
-		}
-	}*/
-
-	while (a==b){
-		a=s1[++i];
-		b=s2[++i];
-	}
-
-	return (a<b);
-}
 
 /*int isEmptyQ(Queue*q){
 	return (q->front==NULL);
@@ -59,29 +32,9 @@ void printQ(Queue *q, FILE *f){
 	char buf[50];
 	Meci *m=q->front;
 	
-
 	while (m!=NULL){
 		fprintf(f, "%-33s-%33s\n", m->n1->nume_echipa, m->n2->nume_echipa);
 		m=m->next;
-
-		/*strcpy((m->n1)->nume_echipa, buf);
-		strtok(buf, " ");
-		while(buf!=NULL){
-			fprintf(f, "%s ", buf);
-			strtok(NULL, " ");
-		}
-
-		fprintf(f, " - ");
-
-		strcpy((m->n2)->nume_echipa, buf);
-		strtok(buf, " ");
-		while(buf!=NULL){
-			fprintf(f, " %s", buf);
-			strtok(NULL, " ");
-		}
-
-		fprintf(f, "\n");*/
-		
 	}
 	
 }
@@ -89,7 +42,6 @@ void printQ(Queue *q, FILE *f){
 int printS(Node* top, FILE* f){
 	int count=0;
 	while (top) {
-		//fputs(top->nume_echipa, f);
 		fprintf(f, "%-33s -  %.2f\n", top->nume_echipa, top->punctaj);
 		top=top->next;
 		count++;
@@ -112,8 +64,6 @@ void enQ_stack_list(Queue **q, Node **top, FILE *f) {
 		*top=(*top)->next->next;
 
 		newNode->next=NULL;
-	
-		//fprintf(f, "%s vs. %s\n", newNode->n1->nume_echipa, newNode->n2->nume_echipa);
 
 		if ((*q)->rear==NULL) (*q)->rear=newNode; 
 		else{
@@ -122,14 +72,12 @@ void enQ_stack_list(Queue **q, Node **top, FILE *f) {
 		}
 		if ((*q)->front==NULL) (*q)->front=(*q)->rear; 	
 
-		//free(temp1);
-		//free(temp2);
 	}
 }
 
 //creeaza doua stive din coada, una de castigatori si una de invinsi
 
-void deQ_toStack(Queue *q, Node **top_l, Node **top_w, FILE *f) {
+void deQ_toStack(Queue *q, Node **top_l, Node **top_w) {
 	Node *no1, *no2;
 	Meci *aux;
 	int i;
@@ -162,7 +110,7 @@ void deQ_toStack(Queue *q, Node **top_l, Node **top_w, FILE *f) {
         //free(aux);
     }
 	
-} 
+}
 
 void deleteStack(Node **top){
 	Node  *temp;
@@ -173,17 +121,12 @@ void deleteStack(Node **top){
 	}
 }
 
-/*void push(Node**top, Node *node) {
-    node->next=*top;
-    *top=node;
-}*/
-
 //simuleaza meciurile dintre echipele din lista initiala pana se ajunge la primele 8 echipe castigatoare
 
-void matchMaking(Node **head, FILE *f){
+void matchMaking(Node **head, BST **root, FILE *f){
     Queue* Q=createQueue();
 	Node *top_w=NULL, *top_l=NULL;
-    int n, round=1;
+    int n, round=1, i;
 
 	fprintf(f, "\n--- ROUND NO:%d\n", round);
     enQ_stack_list(&Q, head, f);
@@ -192,9 +135,19 @@ void matchMaking(Node **head, FILE *f){
 	*head=NULL;
 
 	fprintf(f, "\nWINNERS OF ROUND NO:%d\n", round);
-    deQ_toStack(Q, &top_l, &top_w, f);
+	deQ_toStack(Q, &top_l, &top_w);
 	deleteQueue(Q);
 	n=printS(top_w, f);
+	//printf("%d\n", n);
+	if(n==8){
+        //*top8=top_w;
+        Node* aux=top_w;
+        while(aux) {
+            *root=insert_BST(*root, aux);
+            aux=aux->next;
+        }
+
+    }
     deleteStack(&top_l);
 	round++;
 
@@ -211,9 +164,18 @@ void matchMaking(Node **head, FILE *f){
 		top_w=NULL;
 
 		fprintf(f, "\nWINNERS OF ROUND NO:%d\n", round);
-		deQ_toStack(Q, &top_l, &top_w, f);
+		deQ_toStack(Q, &top_l, &top_w);
 		deleteQueue(Q);
 		n=printS(top_w, f);
+		//printf("%d\n", n);
+		if(n==8){
+            Node* aux=top_w;
+            while(aux) {
+                *root=insert_BST(*root, aux);
+                aux=aux->next;
+            }
+        }
+		
 		deleteStack(&top_l);
 		round++;
     }

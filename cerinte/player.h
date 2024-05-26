@@ -31,6 +31,14 @@ struct q {
 
 typedef struct q Queue;
 
+struct treeNode {
+    char nume_echipa[50];
+    float punctaj;
+    struct treeNode *st, *dr;
+};
+
+typedef struct treeNode BST;
+
 //2
 //void printPoints (Node *head); 
 //Node* find_min(Node *head);
@@ -42,7 +50,8 @@ void elim(Node **head, int n);
 
 Queue* createQueue();
 void deleteQueue(Queue *q);
-void deQ_toStack(Queue *q, Node **top_l, Node **top_w, FILE *f);// 
+void deQ_toStack(Queue *q, Node **top_l, Node **top_w);// 
+//void simulare_meciuri(Queue *q, Node **castig, Node **inv);
 void enQ_stack_list(Queue **q, Node **top, FILE *f);
 //int isEmptyQ(Queue*q);
 int printS(Node *top, FILE *f);
@@ -51,6 +60,13 @@ void deleteStack(Node**top);
 
 //void push(Node**top, Node *n);
 
-void matchMaking(Node **head, FILE *f);
+void matchMaking(Node **head, BST **root, FILE *f);
 
+//4
 
+BST* createLeaf(Node *node);
+BST* insert_BST(BST *root, Node *top);
+void inordine(BST *root, FILE* f);
+int alpha(char s1[], char s2[]);
+
+void clasament(BST *root, FILE* f);

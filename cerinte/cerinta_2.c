@@ -13,21 +13,6 @@
     }
 }*/
 
-//gaseste echipa cu cel mai mic punctaj din lista
-/*Node* find_min(Node *head) {
-    Node *p, *pmin;
-    int i;
-    float min = head->punctaj;
-    for (p=head;p!=NULL;p=p->next){
-        if (p->punctaj<min){
-            min=p->punctaj;
-            pmin=p;
-        }
-    }
-
-    return pmin;
-}*/
-
 
 //sterge echipa cu pctj cel mai mic
 void delete (Node **head){
@@ -74,8 +59,6 @@ void elim(Node **head, int n) {
     while (power(2,m)<=n) m++;
     max=power(2,m-1);
     while (n>max){
-        //puts((*head)->nume_echipa);
-        //printf("%f\n", (*head)->punctaj);
         delete(head);
         n--;
     }
